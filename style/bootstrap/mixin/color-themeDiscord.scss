@@ -1,0 +1,66 @@
+$fontColor: 'fontColor';
+$mainColor: 'mainColor';
+$mainColor2: 'mainColor2';
+$borderColor: 'borderColor';
+$borderColor2: 'borderColor2';
+$bg: 'bg';
+$bg2: 'bg2';
+$codeBG: 'codeBG';
+$shoutboxDivider: 'shoutboxDivider';
+$boxHover: 'boxHover';
+$headerFont: 'headerFont';
+$inputColor: 'inputColor';
+
+$themes: (
+  default: (
+    fontColor: rgba(116, 127, 141, 1),
+    mainColor: rgba(115, 139, 215, 1),
+    mainColor2: rgba(246, 246, 247, 0.6),
+    borderColor: rgba(220, 221, 222, 1),
+    borderColor2: rgba(227, 229, 232, 0.6),
+    bg: rgba(255, 255, 255, 1),
+    bg2: rgba(252, 253, 255, 1),
+    codeBG: rgba(248, 249, 249, 1),
+    shoutboxDivider: rgba(236, 238, 239, 1),
+    boxHover: rgba(153, 170, 181, 0.1),
+    headerFont: rgba(44, 62, 80, 1),
+    inputColor: rgba(44, 62, 80, 1)
+  ),
+  dark: (
+    fontColor: rgba(255, 255, 255, 1),
+    mainColor: rgba(54, 57, 63, 1),
+    mainColor2: rgba(32, 34, 37, 0.3),
+    borderColor: rgba(32, 34, 37, 1),
+    borderColor2: rgba(32, 34, 37, 0.3),
+    bg: rgba(54, 57, 63, 1),
+    bg2: rgba(35, 39, 42, 1),
+    codeBG: rgba(47, 49, 54, 1),
+    shoutboxDivider: rgba(255, 255, 255, 0.04),
+    boxHover: rgba(35, 39, 42, 1),
+    headerFont: rgba(255, 255, 255, 1),
+    inputColor: rgba(115, 139, 215, 1)
+  )
+);
+
+@mixin themed() {
+  @each $theme, $map in $themes {
+    .theme--#{$theme} & {
+      $theme-map: () !global;
+      @each $key, $submap in $map {
+        $value: map-get(map-get($themes, $theme), '#{$key}');
+        $theme-map: map-merge(
+          $theme-map,
+          (
+            $key: $value
+          )
+        ) !global;
+      }
+      @content;
+      $theme-map: null !global;
+    }
+  }
+}
+
+@function t($key) {
+  @return map-get($theme-map, $key);
+}
